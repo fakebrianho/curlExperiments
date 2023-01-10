@@ -5,8 +5,6 @@ uniform float uTime;
 uniform float uSpeed;
 uniform float uCurlFreq;
 uniform float timer;
-uniform sampler2D initPos;
-uniform float bounds;
 varying vec2 vUv;
 
 #define PI 3.1415926538
@@ -294,7 +292,7 @@ void main() {
   // pos = rotate(pos, vec3(1.0, 0.0, 0.0), -t);
   // pos.z += tan(length(length(pos.xy) * 10.0) - t) * 1.0;
   vec3 n = vec3(cnoise(.08*pos2 * 2.05*t*0.1));
-  n*=vec3(snoise((0.12*pos2+4.7 * t* uCurlFreq)));
+  n*=vec3(snoise((0.12*pos2+4.7 * t*0.3)));
   pos = curlNoise(pos * uCurlFreq + t);
   // pos2 = vec3(cnoise(pos2 + t));
   pos2 += n;

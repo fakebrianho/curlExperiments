@@ -58,7 +58,7 @@ export default function initFbo(renderer) {
 			positions: { value: positions },
 			positionsB: { type: 't', value: positionsB },
 			initPos: { type: 't', value: positionsB },
-			timer: { value: 0.0 },
+			timer: { value: 0 },
 			uTime: { value: 0 },
 			uSpeed: { value: 3.0 },
 			bounds: { value: 2.0 },
