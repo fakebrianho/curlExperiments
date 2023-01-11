@@ -15,5 +15,6 @@ void main() {
   if(p.x < -b || p.x > b || p.y > b || p.y < -b || p.z < -b || p.z > b){
     finalColor = vec3(1.0);
   }
-  gl_FragColor = vec4(finalColor, uOpacity);
+  vec3 sunset = vec3(255.0 / 255.0, 100.0 / 255.0, 10.0/255.0);
+  gl_FragColor = vec4(sunset, uOpacity);
 }

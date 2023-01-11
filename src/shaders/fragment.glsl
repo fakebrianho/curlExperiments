@@ -9,7 +9,7 @@ void main() {
   uv.x *= aspect;
 
   vec3 color1 = vec3(0.0, 0.0, 0.0);
-  vec3 color2 = vec3(1.0, 1.0, 1.0);
+  vec3 color2 = vec3(.5, 0.5, 0.5);
   float pattern = sin(length(uv) * 1.0);
   vec3 background = mix(
     color1,

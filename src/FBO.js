@@ -9,7 +9,12 @@ export default class FBO {
 		this.renderMaterial = renderMaterial
 
 		this.gl = this.renderer.getContext()
+		this.gl.getExtension('OES_texture_float_linear')
+		// console.log(this.gl.getExtension('EXT_color_buffer_float'))
+		const available_extensions = this.gl.getSupportedExtensions()
+		// console.log(available_extensions)
 
+		// console.log(this.gl)
 		this.init()
 	}
 
@@ -23,9 +28,10 @@ export default class FBO {
 	checkHardware() {
 		// Check if  float textures is supported
 		// https://github.com/KhronosGroup/WebGL/blob/master/sdk/tests/conformance/extensions/oes-texture-float.html
-		if (!this.gl.getExtension('OES_texture_float')) {
-			throw new Error('float textures not supported')
-		}
+		// if (!this.gl.getExtension('OES_texture_float')) {
+		// this.gl.setDataType(THREE.HalfFloatType)
+		// throw new Error('float textures not supported')
+		// }
 
 		// Check if reading textures inside the vertex shader is supported
 		// https://github.com/KhronosGroup/WebGL/blob/90ceaac0c4546b1aad634a6a5c4d2dfae9f4d124/conformance-suites/1.0.0/extra/webgl-info.html
@@ -115,7 +121,6 @@ export default class FBO {
 		this.renderer.clear()
 		this.renderer.render(this.scene, this.camera)
 		this.renderer.setRenderTarget(null)
-
 		// Use the result of the swap as the new position for the particles' renderer
 		this.particles.material.uniforms.positions.value = this.rtt.texture
 
