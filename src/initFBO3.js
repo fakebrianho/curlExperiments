@@ -1,5 +1,5 @@
-import simVertex from '/@/shaders/simulationVert2.glsl'
-import simFragment from '/@/shaders/simulationFrag2.glsl'
+import simVertex from '/@/shaders/simulationVert.glsl'
+import simFragment from '/@/shaders/simulationFrag.glsl'
 import particlesFragment from '/@/shaders/particlesFragment.glsl'
 import particlesVertex from '/@/shaders/particlesVertex.glsl'
 import FBO from './FBO'
@@ -9,11 +9,12 @@ import {
 	ShaderMaterial,
 	AdditiveBlending,
 	RGBFormat,
+	RGBAFormat,
 	FloatType,
 } from 'three'
 
 function getRandomData(width, height, size) {
-	var len = width * height * 3
+	var len = width * height * 4
 	var data = new Float32Array(len)
 	while (len--) data[len] = (Math.random() - 0.5) * size
 	return data
@@ -23,14 +24,15 @@ export default function initFbo(renderer) {
 	// Set up the FBO
 	const fboWidth = 256
 	const fboHeight = 256
-	let length = fboWidth * fboHeight * 3
+	let length = fboWidth * fboHeight * 4
 	let data = new Float32Array(length)
-	for (let i = 0; i < length; i += 3) {
+	for (let i = 0; i < length; i += 4) {
 		// Random positions inside a sphere
 		const point = getRandomSpherePoint()
 		data[i + 0] = point.x
 		data[i + 1] = point.y
 		data[i + 2] = point.z
+		data[i + 3] = point.w
 	}
 
 	let dataB = getRandomData(fboWidth, fboHeight, 2)
@@ -38,7 +40,7 @@ export default function initFbo(renderer) {
 		dataB,
 		fboWidth,
 		fboHeight,
-		RGBFormat,
+		RGBAFormat,
 		FloatType
 	)
 	positionsB.needsUpdate = true
@@ -47,7 +49,7 @@ export default function initFbo(renderer) {
 		data,
 		fboWidth,
 		fboHeight,
-		RGBFormat,
+		RGBAFormat,
 		FloatType
 	)
 	positions.needsUpdate = true
@@ -61,7 +63,7 @@ export default function initFbo(renderer) {
 			timer: { value: 0.0 },
 			uTime: { value: 0 },
 			uSpeed: { value: 3.0 },
-			bounds: { value: 1.5 },
+			bounds: { value: 2.0 },
 			uCurlFreq: { value: 0.55 },
 		},
 	})
@@ -72,7 +74,6 @@ export default function initFbo(renderer) {
 			positions: { value: null },
 			uTime: { value: 0 },
 			uPointSize: { value: 1.4 },
-			bounds: { value: 1.5 },
 			uOpacity: { value: 0.55 },
 		},
 		transparent: true,

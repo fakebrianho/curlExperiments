@@ -20,6 +20,7 @@ export function getRandomSpherePoint() {
 	vector.x = r * sinPhi * cosTheta
 	vector.y = r * sinPhi * sinTheta
 	vector.z = r * cosPhi
+	vector.w = r * cosPhi * cosPhi
 
 	return vector
 }
