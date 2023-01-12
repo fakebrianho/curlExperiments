@@ -280,41 +280,46 @@ void main() {
 
   vec2 uv = vUv;
 
-  vec3 pos = texture2D(positions, uv).rgb; // basic simulation: displays the particles in place.
-  vec3 curlPos = texture2D(positions, uv).rgb;
-  vec3 finalPos = vec3(0.0);
-  vec3 finalPos2 = vec3(0.0);
-  vec3 pos2 = texture2D(positionsB, uv).rgb;
-  vec3 curlPos2 = texture2D(positionsB, uv).rgb;
-  vec3 tmpInitPos = texture2D(initPos, uv).rgb;
-  vec3 initPos = tmpInitPos;
+  // vec3 pos = texture2D(positions, uv).rgb; // basic simulation: displays the particles in place.
+  // vec3 curlPos = texture2D(positions, uv).rgb;
+  // vec3 finalPos = vec3(0.0);
+  // vec3 finalPos2 = vec3(0.0);
+  // vec3 pos2 = texture2D(positionsB, uv).rgb;
+  // vec3 curlPos2 = texture2D(positionsB, uv).rgb;
+  // vec3 tmpInitPos = texture2D(initPos, uv).rgb;
+  // vec3 initPos = tmpInitPos;
 
-  // Move the particles here
-  // pos = rotate(pos, vec3(0.0, 0.0, 1.0), t + sin(length(pos.xy) * 2.0 + PI * 0.5) * 10.0);
-  // pos = rotate(pos, vec3(1.0, 0.0, 0.0), -t);
-  // pos.z += tan(length(length(pos.xy) * 10.0) - t) * 1.0;
-  vec3 n = vec3(cnoise(.08*pos2 * 2.05*t*0.1));
-  n*=vec3(snoise((0.12*pos2+4.7 * t* uCurlFreq)));
-  pos = curlNoise(pos * uCurlFreq + t);
-  // pos2 = vec3(cnoise(pos2 + t));
-  pos2 += n;
-  curlPos = curlNoise(curlPos * uCurlFreq + t);
-  curlPos2 = curlNoise(curlPos2 * uCurlFreq + t);
-  // if you uncomment the next noise additions
-  // you'll get very pleasing flocking particles
-  // inside the bounds of a sphere
+  // // Move the particles here
+
+  // vec3 n = vec3(cnoise(.08*pos2 * 2.05*t*0.1));
+  // n*=vec3(snoise((0.12*pos2+4.7 * t* uCurlFreq)));
+  // pos = curlNoise(pos * uCurlFreq + t);
+  // pos2 += n;
+  // curlPos = curlNoise(curlPos * uCurlFreq + t);
+  // curlPos2 = curlNoise(curlPos2 * uCurlFreq + t);
+  // // if you uncomment the next noise additions
+  // // you'll get very pleasing flocking particles
+  // // inside the bounds of a sphere
+  // curlPos += curlNoise(curlPos * uCurlFreq * 2.0) * 0.5;
+  // curlPos += curlNoise(curlPos * uCurlFreq * 4.0) * 0.25;
+  // curlPos += curlNoise(curlPos * uCurlFreq * 8.0) * 0.125;
+  // curlPos += curlNoise(pos * uCurlFreq * 16.0) * 0.0625;
+
+  // finalPos = mix(pos, curlPos, cnoise(pos + t));
+  // finalPos2 = mix(pos2, curlPos2, cnoise(pos2 + t));
+  // vec3 bTex = texture2D( positionsB, uv ).rgb; 
+  // finalPos = mix(finalPos, finalPos2, timer);
+  //     if(pos2.x < -b || pos2.x > b || pos2.y > b || pos2.y < -b || pos2.z < -b || pos2.z > b){
+  //       pos2 = initPos;
+  //   }
+  // finalPos = mix(finalPos, pos2, timer);
+  // gl_FragColor = vec4(finalPos, 1.0);
+  vec3 pos = texture2D(positions, vUv).rgb;
+  vec3 curlPos = texture2D(positions, vUv).rgb;
+
+  pos = curlNoise(pos * uCurlFreq + uTime * 0.1);
+  curlPos = curlNoise(curlPos * uCurlFreq + uTime * 0.1);
   curlPos += curlNoise(curlPos * uCurlFreq * 2.0) * 0.5;
-  curlPos += curlNoise(curlPos * uCurlFreq * 4.0) * 0.25;
-  curlPos += curlNoise(curlPos * uCurlFreq * 8.0) * 0.125;
-  curlPos += curlNoise(pos * uCurlFreq * 16.0) * 0.0625;
 
-  finalPos = mix(pos, curlPos, cnoise(pos + t));
-  finalPos2 = mix(pos2, curlPos2, cnoise(pos2 + t));
-  vec3 bTex = texture2D( positionsB, uv ).rgb; 
-  finalPos = mix(finalPos, finalPos2, timer);
-      if(pos2.x < -b || pos2.x > b || pos2.y > b || pos2.y < -b || pos2.z < -b || pos2.z > b){
-        pos2 = initPos;
-    }
-  finalPos = mix(finalPos, pos2, timer);
-  gl_FragColor = vec4(finalPos, 1.0);
+  gl_FragColor = vec4(mix(pos, curlPos, sin(uTime)), 1.0);
 }

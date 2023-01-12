@@ -5,8 +5,12 @@ import { PARAMS, pane, orbit } from './controls'
 import { resize } from './eventListeners'
 import initFbo from './initFBO3'
 import background from './background'
+import glb from './externalModels'
 import { MeshTransmissionMaterial } from './meshTransmissionMaterial'
-let fbo, time, canvas
+import addLight from './lights'
+let fbo, time, canvas, gltfScene
+
+THREE.ColorManagement.legacyMode = false
 const renderer = new THREE.WebGLRenderer({
 	antialias: true,
 	alpha: true,
@@ -25,49 +29,24 @@ function init() {
 	document.body.appendChild(renderer.domElement)
 	resize(camera, renderer, sizes)
 	orbit(camera, renderer)
+	// glb(scene)
 	add()
-	testClearMat()
 	animate()
-}
-function testClearMat() {
-	const geometry = new THREE.BoxGeometry(1, 1, 1)
-	const material = new THREE.MeshPhysicalMaterial({
-		roughness: 0,
-		transmission: 1,
-		thickness: 0.5, // Add refraction!
-	})
-	const g2 = new THREE.SphereGeometry(0.2, 32, 16)
-	const m2 = new THREE.MeshBasicMaterial({ color: 'red' })
-	const mesh2 = new THREE.Mesh(g2, m2)
-	const mesh = new THREE.Mesh(geometry, material)
-	scene.add(mesh)
-	mesh2.position.set(0, 0, 0)
-	scene.add(mesh2)
 
-	// const material = new THREE.MeshPhysicalMaterial()
-	// const material = new MeshTransmissionMaterial(10)
-	// material.uniforms.chromaticAberration.value = 0.05
-	// material.uniforms.anisotropy.value = 0.1
-	// material.uniforms.distortion.value = 0.0
-	// material.uniforms.distortionScale.value = 0.5
-	// material.uniforms.temporalDistortion.value = 0.0
-	// material.uniforms.temporalDistortion.value = 0.0
-	// material.roughness = 0
-	// material.thickness = 4.5
-	// material.ior = 1.5
-	// material.clearcoat = 1
-	// material.clearcoatRoughness = 0
-	// roughness: 0,
-	// thickness: 4.5,
-	// ior: 1.5
-	// const mesh = new THREE.Mesh(geometry, material)
-	// scene.add(mesh)
-	// console.log(material)
+	// scene.add(gltfScene)
 }
 
 function add() {
 	fbo = initFbo(renderer)
 	const bg = background()
+	const g = new THREE.SphereGeometry(1, 100, 100)
+	const m = new THREE.MeshStandardMaterial({ color: 'red' })
+	const mm = new THREE.Mesh(g, m)
+	// scene.add(mm)
+	let light = addLight()
+	scene.add(light)
+	// gltfScene = glb()
+	// scene.add(gltfScene)
 	scene.add(bg)
 	scene.add(fbo.particles)
 }

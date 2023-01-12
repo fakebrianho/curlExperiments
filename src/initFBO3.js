@@ -1,5 +1,5 @@
 import simVertex from '/@/shaders/simulationVert.glsl'
-import simFragment from '/@/shaders/simulationFrag.glsl'
+import simFragment from '/@/shaders/simulationFrag3.glsl'
 import particlesFragment from '/@/shaders/particlesFragment.glsl'
 import particlesVertex from '/@/shaders/particlesVertex.glsl'
 import FBO from './FBO'
@@ -75,8 +75,9 @@ export default function initFbo(renderer) {
 			uTime: { value: 0 },
 			uPointSize: { value: 1.4 },
 			uOpacity: { value: 0.55 },
+			uRadius: { value: 1.0 },
 		},
-		transparent: true,
+		transparent: false,
 		blending: AdditiveBlending,
 	})
 	const fbo = new FBO(

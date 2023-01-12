@@ -19,6 +19,7 @@
 		"function-bind": "^1.1.1",
 		"has": "^1.0.3",
 		"is-core-module": "^2.10.0",
+		"lamina": "^1.1.23",
 		"nanoid": "^3.3.4",
 		"path-parse": "^1.0.7",
 		"pathe": "^0.3.7",
